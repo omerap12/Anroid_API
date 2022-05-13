@@ -21,7 +21,7 @@ public class ContactService : IContactService
         Conversation_one.AddMessage(new Message("Hi avital", true));
 
         Conversation Conversation_two = new Conversation("TSM_Omer", "Avitalos");
-        Conversation_one.AddMessage(new Message("Hi avital", false));
+        Conversation_two.AddMessage(new Message("Hi avital", false));
 
         contact.AddConversation(Conversation_one);
         contact_two.AddConversation(Conversation_two);
@@ -87,7 +87,8 @@ public class ContactService : IContactService
     public List<Message> GetMessagesBetweenUsers(string user_name, string id)
     {
         Contact contact = Get(user_name);
-        Conversation conversation = contact.GetConversations();
+        Conversation conversation = contact.GetSpecificConversion(id);
+        return conversation.GetAllMessages();
     }
 }
 

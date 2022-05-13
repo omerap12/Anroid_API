@@ -54,7 +54,16 @@ namespace Web_API.Models
         }
         public Conversation GetSpecificConversion(string id)
         {
-            Conversation conversation = Conversations.Find(x=>x.)
+            Conversation conversation = null;
+            for (int i = 0; i < this.Conversations.Count; i++)
+            {
+                if (Conversations[i].IsMe(id) == true)
+                {
+                    conversation = Conversations[i];
+                    break;
+                }
+            }
+            return conversation;
         }
     }
 }

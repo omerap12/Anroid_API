@@ -39,5 +39,11 @@ namespace WebApi.Models
             this.last = message.Content;
             this.Messages.Add(message);
         }
+        public bool IsMe(string name)
+        {
+            if (this.from == name || this.to == name)
+                return true;
+            return false;
+        }
     }
 }
