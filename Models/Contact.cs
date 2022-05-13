@@ -48,6 +48,18 @@ namespace Web_API.Models
         {
             return this.Conversations;
         }
+
+        public List<Message> GetMessagesFromUser(string id)
+        {
+            for (int i = 0; i< Conversations.Count; i++)
+            {
+                if (Conversations[i].IsMe(id) == true)
+                {
+                    return Conversations[i].GetAllMessages();
+                }
+            }
+            return null;
+        }
         public void Delete_user(string id)
         {
             Contacts.Remove(Contacts.Find(x => x.Id == id));
