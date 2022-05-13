@@ -16,6 +16,9 @@ namespace Web_API.Services
         public void Edit(string id, string user_name, string password, string server);
         public List<Message> GetMessagesBetweenUsers(string user_name, string id);
 
+        public void SendMessageToOther(string from, string to, string content);
+
+        public void SendMessageToMe(string from, string to, string content);
 
 
         /*public void Delete(string id);

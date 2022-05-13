@@ -65,6 +65,15 @@ namespace Web_API.Controllers
         {
             return Ok(ContactService.GetMessagesBetweenUsers(user_name,id));
         }
+
+        [HttpPost("/api/{user_name}/contacts/{id}/messages")]
+        public IActionResult SendMessage(string user_name, string id, string content)
+        {
+            ContactService.SendMessageToOther(user_name, id, content);
+            ContactService.SendMessageToMe(user_name, id, content);
+            return Ok();
+        }
+
         /* 
 
          [HttpPost("/api/contacts")]

@@ -65,9 +65,15 @@ namespace Web_API.Models
             Contacts.Remove(Contacts.Find(x => x.Id == id));
         }
 
-        public void setMessage(string from, string content)
+        public void setMessage(string to, string content, bool sent)
         {
-
+            for (int i = 0; i < Conversations.Count; i++)
+            {
+                if (Conversations[i].IsMe(to) == true)
+                {
+                    Conversations[i].AddMessage(new Message(content, sent));
+                }
+            }
         }
     }
 }

@@ -91,13 +91,17 @@ public class ContactService : IContactService
 
     }
 
-    public void SendMessage(string from, string to, string content)
+    public void SendMessageToOther(string from, string to, string content)
     {
-
+        Contact contact = Get(from);
+        contact.setMessage(to, content, true);
     }
 
-
-
+    public void SendMessageToMe(string from, string to, string content)
+    {
+        Contact contact = Get(to);
+        contact.setMessage(from, content, false);
+    }
 }
 
 
