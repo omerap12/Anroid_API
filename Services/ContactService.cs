@@ -99,4 +99,13 @@ public class ContactService : IContactService
         Message message = contact.Messages.Find(x => x.Id == message_id);
         return message;
     }
+    public void DeleteMessage(string user_id, string message_id)
+    {
+        Contact contact = Contacts.Find(x => x.Id == user_id);
+        Contacts.Remove(contact);
+        Message message_to_delete = contact.Messages.Find(x => x.Id == message_id);
+        contact.Messages.Remove(message_to_delete);
+        Contacts.Add(contact);
+
+    }
 }

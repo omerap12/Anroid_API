@@ -20,5 +20,7 @@ namespace Web_API.Services
 
         public void AddMessage(string id, string content);
         public Message GetMessageWithId_2FromId_1(string user_id,string message_id);
+
+        public void DeleteMessage(string user_id, string message_id);
     }
 }
