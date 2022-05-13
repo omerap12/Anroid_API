@@ -96,6 +96,7 @@ namespace Web_API.Controllers
             ContactService.AddMessage(id, content);
             return Ok();
         }
+
         [HttpGet("/api/contacts/{user_id}/messages/{message_id}")]
         public IActionResult GetMessageWithId_2FromId_1(string user_id, string message_id)
         {
@@ -103,11 +104,21 @@ namespace Web_API.Controllers
             return Ok(message);
         }
 
-
-
-
-
-
+        [HttpPut("/api/contacts/{user_id}/messages/{message_id}")]
+        public IActionResult UpdateMessageWithId_2FromId_1(string user_id, string message_id, string? content)
+        {
+            Message message = ContactService.GetMessageWithId_2FromId_1(user_id, message_id);
+            if (message == null)
+            {
+                return NotFound();
+            }
+            if (content != null)
+            {
+                message.Content = content;
+                return Ok(message);
+            }
+            return Ok(message);
+        }
     }
 }
 
