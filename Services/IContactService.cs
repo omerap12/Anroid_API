@@ -4,9 +4,12 @@ namespace Web_API.Services
 {
     public interface IContactService
     {
-        public List<Contact> GetAllContacts(string user_id);
+        public List<Contact> GetAllContacts();
         public void CreateNewContact(string add_to, string id, string name, string server);
 
+        public Contact Get(string id);
+
+        public void Delete(string id);
 
 
         /*public void Delete(string id);

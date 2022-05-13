@@ -30,22 +30,33 @@ namespace Web_API.Controllers
             return Ok();
         }
 
-        /* [HttpGet("api/contacts/{id}")]
-         public IActionResult Details(string? id)
-         {
-             if (id == null)
-             {
-                 return NotFound();
-             }
+        [HttpGet("api/contacts/{id}")]
+        public IActionResult Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var contact = ContactService.Get(id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
 
-             var contact = ContactService.Get((string)id);
-             if (contact == null)
-             {
-                 return NotFound();
-             }
+            return Ok(contact);
+        }
 
-             return Ok(contact);
-         }
+
+        [HttpPut("api/contacts/{id}")]
+        public IActionResult Edit(string id, string user_name, string nick_name, string password, string server)
+        {
+            Contact contact = ContactService.GetAllContacts().Find(x=> x.Id == id);
+            Contact new_contact = new Contact(id, user_name, nick_name, password, server);
+
+            return Ok(contact);
+        }
+
+        /* 
 
          [HttpPost("/api/contacts")]
          public IActionResult Create(string id, string name, string server)
