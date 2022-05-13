@@ -20,7 +20,7 @@ namespace Web_API.Controllers
 
         public IActionResult Get(string user_id)
         {
-            return Ok(ContactService.GetAllContacts(user_id));
+            return Ok(ContactService.Get(user_id));
 
         }
         [HttpPost("/api/{user_id}/contacts")]
@@ -48,10 +48,9 @@ namespace Web_API.Controllers
 
 
         [HttpPut("api/contacts/{id}")]
-        public IActionResult Edit(string id, string user_name, string nick_name, string password, string server)
+        public IActionResult Edit(string id, string user_name, string password, string server)
         {
             Contact contact = ContactService.GetAllContacts().Find(x=> x.Id == id);
-            Contact new_contact = new Contact(id, user_name, nick_name, password, server);
 
             return Ok(contact);
         }
