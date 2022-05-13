@@ -48,5 +48,9 @@ namespace Web_API.Models
         {
             return this.Conversations;
         }
+        public void Delete_user(string id)
+        {
+            Contacts.Remove(Contacts.Find(x => x.Id == id));
+        }
     }
 }

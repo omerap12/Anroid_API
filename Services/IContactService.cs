@@ -11,7 +11,7 @@ namespace Web_API.Services
 
         public Contact Get(string id);
 
-        public void Delete(string id);
+        public void Delete(string user_name, string id);
 
         public void Edit(string id, string user_name, string password, string server);
 

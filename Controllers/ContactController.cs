@@ -53,13 +53,13 @@ namespace Web_API.Controllers
             return Ok();
         }
 
-        [HttpDelete("/api/contacts/{id}")]
-        public IActionResult Delete(string id)
+        [HttpDelete("api/{user_name}/contacts/{id}")]
+        public IActionResult Delete(string user_name, string id)
         {
-            ContactService.Delete(id);
-
-            return NoContent();
+            ContactService.Delete(user_name, id);
+            return Ok();
         }
+
 
         /* 
 

@@ -62,17 +62,18 @@ public class ContactService : IContactService
         return contact.GetContactsList();
     }
 
-    public void Delete(string id)
+    public void Delete(string user_name,string id)
     {
-        Contact contact = Contacts.Find(x => x.Id == id);
-        Contacts.Remove(contact);
+        Contact contact = Contacts.Find(x => x.Id == user_name);
+        contact.Delete_user(id);
+        
     }
 
-    public void Edit(string id, string user_name, string password, string server)
+    public void Edit(string user_name, string id, string password, string server)
     {
-        Contact contact = Contacts.Find(x => x.Id == id);
-        Delete(id);
-        contact.Name = user_name;
+        Contact contact = Contacts.Find(x => x.Id == user_name);
+        Delete(user_name,id);
+        contact.Name = id;
         contact.Password = password;
         contact.Server = server;
         Contacts.Add(contact);
