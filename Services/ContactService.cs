@@ -1,4 +1,6 @@
 ﻿using Web_API.Models;
+using WebApi.Models;
+
 namespace Web_API.Services;
 
 public class ContactService : IContactService
@@ -8,19 +10,26 @@ public class ContactService : IContactService
 
     public ContactService()
     {
-        Contact contact = new Contact("omer","Omer");
-        Message message = new Message("Hi, how are u?");
-        message.Sent = true;
-        message.Id = "1";
-        contact.Messages.Add(message);
-        Contacts.Add(contact);
+        Contact contact = new Contact("TSM_Omer", "Omer", "12345", "TalkToMe");
+        Contact contact_two = new Contact("Avitalos", "Avital", "12345", "TalkToMe");
 
-        Contact contact_two = new Contact("avital","Avital");
-        Message message_two = new Message("I'm mad at you");
-        message_two.Sent = false;
-        message_two.Id = "2";
-        contact_two.Messages.Add(message_two);
-        Contacts.Add(contact_two);
+        contact.AddContacts(contact_two);
+        contact_two.AddContacts(contact);
+
+
+        Conversation Conversation_one = new Conversation("TSM_Omer", "Avitalos");
+        Conversation_one.AddMessage(new Message("Hi avital", true));
+
+        Conversation Conversation_two = new Conversation("TSM_Omer", "Avitalos");
+        Conversation_one.AddMessage(new Message("Hi avital", false));
+
+        contact.AddConversation(Conversation_one);
+        contact_two.AddConversation(Conversation_two);
+
+        Contacts.Add(contact);
+        Contacts.Add(contact_two);  
+
+        
     }
 
     /*public void Create(string user_name)
@@ -28,6 +37,30 @@ public class ContactService : IContactService
         return;
     }*/
 
+
+    public List<Contact> GetAllContacts(string user_id)
+    {
+        Contact contact = Contacts.Find(x => x.Id == user_id);
+        return contact.GetConversation();
+
+    }
+
+    public void CreateNewContact(string add_to, string id, string name, string server)
+    {
+        Contact new_one = new Contact(id, name, "password", server);
+        Contact addTo = Contacts.Find(x=>x.Id == add_to);
+        Conversation conversation_one = new Conversation(id, add_to);
+        Conversation conversation_two = new Conversation(add_to,id);
+        addTo.AddContacts(new_one);
+        new_one.AddContacts(addTo);
+
+        addTo.AddConversation(conversation_one);
+        new_one.AddConversation(conversation_two);
+    }
+
+
+
+/*
     public void Delete(int id)
     {
         return;
@@ -127,5 +160,5 @@ public class ContactService : IContactService
     {
         AddMessage(user_id_from, content, true);
         AddMessage(user_id_to, content, false);
-    }
+    }*/
 }

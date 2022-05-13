@@ -1,7 +1,14 @@
-﻿namespace Web_API.Models
+﻿using System.ComponentModel.DataAnnotations;
+using WebApi.Models;
+
+namespace Web_API.Models
 {
     public class Contact
     {
+        private List<Contact> Contacts { get; set; }
+        private List<Conversation> Conversations { get; set; }
+
+        [Key]
         public string Id { get; set; }
         public string Name { get; set; }
 
@@ -9,32 +16,33 @@
 
         public string CreatedDate { get; set; }
 
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
         public string Server { get; set; }
 
-
-        public List<Message> Messages { get; set; }
-
-        public int getMessageLength()
+        public Contact(string id, string name, string password, string server)
         {
-            return this.Messages.Count;
-        }
-
-        public Message Last { get; set; }
-
-        public Contact(string id, string name,string server, string last,string last_date)
-        {
-            this.Id = Id;
+            this.Id = id;
             this.Name = name;
-            this.Messages = new List<Message>();
-
+            this.Contacts = new List<Contact>();
+            this.Password = password;
+            this.Server = server;
+            this.Conversations = new List<Conversation>();
         }
-        public Contact(string id, string name)
+
+        public void AddContacts(Contact contact)
         {
-            this.Id=id;
-            this.Name=name;
-            this.Messages = new List<Message>();
+            this.Contacts.Add(contact);
         }
-
-
+        public void AddConversation(Conversation conversation)
+        {
+            this.Conversations.Add(conversation);
+        }
+        public List<Contact> GetConversation()
+        {
+            return this.Contacts;
+        }
     }
 }

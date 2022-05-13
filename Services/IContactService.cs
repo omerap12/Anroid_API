@@ -4,11 +4,12 @@ namespace Web_API.Services
 {
     public interface IContactService
     {
-        public List<Contact> GetAll();
+        public List<Contact> GetAllContacts(string user_id);
+        public void CreateNewContact(string add_to, string id, string name, string server);
 
-        public Contact Get(string id);
 
-        public void Delete(string id);
+
+        /*public void Delete(string id);
 
         public void Create(string name, string server);
 
@@ -23,6 +24,6 @@ namespace Web_API.Services
 
         public void DeleteMessage(string user_id, string message_id);
 
-        public void SendNewMessage(string user_id_from, string user_id_to, string content);
+        public void SendNewMessage(string user_id_from, string user_id_to, string content);*/
     }
 }
