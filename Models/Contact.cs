@@ -52,18 +52,10 @@ namespace Web_API.Models
         {
             Contacts.Remove(Contacts.Find(x => x.Id == id));
         }
-        public Conversation GetSpecificConversion(string id)
+
+        public void setMessage(string from, string content)
         {
-            Conversation conversation = null;
-            for (int i = 0; i < this.Conversations.Count; i++)
-            {
-                if (Conversations[i].IsMe(id) == true)
-                {
-                    conversation = Conversations[i];
-                    break;
-                }
-            }
-            return conversation;
+
         }
     }
 }
