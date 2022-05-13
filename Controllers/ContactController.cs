@@ -17,6 +17,7 @@ namespace Web_API.Controllers
         }
 
         [HttpGet("/api/contacts")]
+       
         public IActionResult Get()
         {
             return Ok(ContactService.GetAll());
@@ -120,12 +121,14 @@ namespace Web_API.Controllers
             return Ok(message);
         }
 
+
         [HttpDelete("/api/contacts/{user_id}/messages/{message_id}")]
         public IActionResult DeleteMessageWithIdFromID(string user_id, string message_id)
         {
             ContactService.DeleteMessage(user_id, message_id);
             return Ok();
         }
+
 
         [HttpPost("/api/transfer")]
         public IActionResult SendNewMessage(string user_id_from, string user_id_to, string content)
