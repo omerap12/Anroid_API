@@ -62,17 +62,17 @@ public class ContactService : IContactService
         return contact.GetContactsList();
     }
 
-    public void Delete(string user_name,string id)
+    public void Delete(string user_name, string id)
     {
         Contact contact = Contacts.Find(x => x.Id == user_name);
         contact.Delete_user(id);
-        
+
     }
 
     public void Edit(string user_name, string id, string password, string server)
     {
         Contact contact = Contacts.Find(x => x.Id == user_name);
-        Delete(user_name,id);
+        Delete(user_name, id);
         contact.Name = id;
         contact.Password = password;
         contact.Server = server;
@@ -83,6 +83,13 @@ public class ContactService : IContactService
     {
         Contact contact = Contacts.Find(x => x.Id == id);
         return contact;
+    }
+    public List<Message> GetMessagesBetweenUsers(string user_name, string id)
+    {
+        Contact contact = Get(user_name);
+        Conversation conversation = contact.GetConversations();
+    }
+}
 
         /*
 
@@ -181,5 +188,4 @@ public class ContactService : IContactService
                 AddMessage(user_id_from, content, true);
                 AddMessage(user_id_to, content, false);
             }*/
-    }
-}
+    

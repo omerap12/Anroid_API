@@ -60,7 +60,11 @@ namespace Web_API.Controllers
             return Ok();
         }
 
-
+        [HttpGet("/api/{user_name}/contacts/{id}/messages")]
+        public IActionResult GetMessagesFromUser(string user_name, string id)
+        {
+            return Ok(ContactService.GetMessagesBetweenUsers(user_name,id));
+        }
         /* 
 
          [HttpPost("/api/contacts")]

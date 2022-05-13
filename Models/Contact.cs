@@ -52,5 +52,9 @@ namespace Web_API.Models
         {
             Contacts.Remove(Contacts.Find(x => x.Id == id));
         }
+        public Conversation GetSpecificConversion(string id)
+        {
+            Conversation conversation = Conversations.Find(x=>x.)
+        }
     }
 }
