@@ -17,10 +17,9 @@ namespace Web_API.Controllers
         }
 
         [HttpGet("/api/{user_id}/contacts")]
-
         public IActionResult Get(string user_id)
         {
-            return Ok(ContactService.Get(user_id));
+            return Ok(ContactService.GetContacts(user_id));
 
         }
         [HttpPost("/api/{user_id}/contacts")]
@@ -50,9 +49,8 @@ namespace Web_API.Controllers
         [HttpPut("api/contacts/{id}")]
         public IActionResult Edit(string id, string user_name, string password, string server)
         {
-            Contact contact = ContactService.GetAllContacts().Find(x=> x.Id == id);
-
-            return Ok(contact);
+            ContactService.Edit(id, user_name, password, server);
+            return Ok();
         }
 
         /* 

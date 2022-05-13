@@ -40,9 +40,13 @@ namespace Web_API.Models
         {
             this.Conversations.Add(conversation);
         }
-        public List<Contact> GetConversation()
+        public List<Contact> GetContactsList()
         {
             return this.Contacts;
+        }
+        public List<Conversation> GetConversations ()
+        {
+            return this.Conversations;
         }
     }
 }

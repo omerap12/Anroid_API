@@ -5,11 +5,15 @@ namespace Web_API.Services
     public interface IContactService
     {
         public List<Contact> GetAllContacts();
+
+        public List<Contact> GetContacts(string user_id);
         public void CreateNewContact(string add_to, string id, string name, string server);
 
         public Contact Get(string id);
 
         public void Delete(string id);
+
+        public void Edit(string id, string user_name, string password, string server);
 
 
         /*public void Delete(string id);
