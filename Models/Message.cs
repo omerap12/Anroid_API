@@ -13,5 +13,12 @@
             Created = DateTime.Now.ToString();
 
         }
+        public Message(string value, bool sent)
+        {
+            Content = value;
+            Created = DateTime.Now.ToString();
+            Sent = sent;
+
+        }
     }
 }

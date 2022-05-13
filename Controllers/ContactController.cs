@@ -119,6 +119,7 @@ namespace Web_API.Controllers
             }
             return Ok(message);
         }
+
         [HttpDelete("/api/contacts/{user_id}/messages/{message_id}")]
         public IActionResult DeleteMessageWithIdFromID(string user_id, string message_id)
         {
@@ -126,11 +127,13 @@ namespace Web_API.Controllers
             return Ok();
         }
 
+        [HttpPost("/api/transfer")]
 
-
-
-
-
+        public IActionResult SendNewMessage(string user_id_from, string user_id_to, string content)
+        {
+            ContactService.SendNewMessage(user_id_from, user_id_to, content);
+            return Ok();
+        }
 
     }
     

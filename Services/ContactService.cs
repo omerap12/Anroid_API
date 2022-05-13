@@ -93,6 +93,20 @@ public class ContactService : IContactService
 
     }
 
+    public void AddMessage(string id, string content, bool sent)
+    {
+        Contact contact = Get(id);
+        Message message = new Message(content, sent);
+       
+        int new_id = contact.Messages.Count + 1;
+        message.Id = new_id.ToString();
+
+        contact.Messages.Add(message);
+        Delete(id);
+        Contacts.Add(contact);
+
+    }
+
     public Message GetMessageWithId_2FromId_1(string user_id, string message_id)
     {
         Contact contact = Get(user_id);
@@ -107,5 +121,11 @@ public class ContactService : IContactService
         contact.Messages.Remove(message_to_delete);
         Contacts.Add(contact);
 
+    }
+
+    public void SendNewMessage(string user_id_from, string user_id_to, string content)
+    {
+        AddMessage(user_id_from, content, true);
+        AddMessage(user_id_to, content, false);
     }
 }
