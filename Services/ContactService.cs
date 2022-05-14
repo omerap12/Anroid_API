@@ -12,6 +12,9 @@ public class ContactService : IContactService
     {
         Contact contact = new Contact("TSM_Omer", "Omer", "12345", "TalkToMe");
         Contact contact_two = new Contact("Avitalos", "Avital", "12345", "TalkToMe");
+        contact.Last = "Hi avital";
+        contact_two.Last = "Hi avital";
+
 
         contact.AddContacts(contact_two);
         contact_two.AddContacts(contact);
@@ -102,104 +105,125 @@ public class ContactService : IContactService
         Contact contact = Get(to);
         contact.setMessage(from, content, false);
     }
+    public Message GetSpecificMessage(string user_name, string other_user_id, string message_id)
+    {
+        Contact contact = Get(user_name);
+        return contact.GetSpecificMessageFromUser(other_user_id, message_id);
+
+    }
+    public void EditSpecificMessage(string user_name, string other_user_id, string message_id, string content)
+    {
+        Contact contact = Get(user_name);
+        Contact contact_two = Get(other_user_id);
+        contact.EditSpecificMessage(other_user_id,message_id,content);
+        contact_two.EditSpecificMessage(user_name, message_id, content);
+    }
+    public void DeleteSpecificMessage(string user_name, string other_user_id, string message_id)
+    {
+        Contact contact = Get(user_name);
+        Contact contact_two = Get(other_user_id);
+        contact.DeleteSpecificMessage(other_user_id, message_id);
+        contact_two.DeleteSpecificMessage(user_name, message_id);
+    }
+
 }
 
 
-        /*
+/*
 
-            public void Add(Contact contact)
-            {
-                Contacts.Add(contact);
-            }
+    public void Add(Contact contact)
+    {
+        Contacts.Add(contact);
+    }
 
-            public void Edit(int id, string user_name, string description, int grade)
-            {
-                return;
-            }
+    public void Edit(int id, string user_name, string description, int grade)
+    {
+        return;
+    }
 
-            public Contact Get(string id)
-            {
-                Contact contact = Contacts.Find(x=>x.Id == id);
-                return contact;
-            }
+    public Contact Get(string id)
+    {
+        Contact contact = Contacts.Find(x=>x.Id == id);
+        return contact;
+    }
 
-            public List<Contact> GetAll()
-            {
-                return Contacts;
-            }
+    public List<Contact> GetAll()
+    {
+        return Contacts;
+    }
 
-            public void Create(string name, string server)
-            {
-                Contact contact = new Contact(name, name);
-                contact.Server = server;
-                Contacts.Add(contact);
+    public void Create(string name, string server)
+    {
+        Contact contact = new Contact(name, name);
+        contact.Server = server;
+        Contacts.Add(contact);
 
-            }
+    }
 
-            public void Delete(string id)
-            {
-                Contacts.Remove(Get(id));
-            }
+    public void Delete(string id)
+    {
+        Contacts.Remove(Get(id));
+    }
 
-            public void Update(string name, string server)
-            {
-                Contact contact = Get(name);
-                contact.Server = server;
-                Delete(contact.Id);
-                Create(contact.Name, contact.Server);
-            }
-            public List<Message> GetMessages(string id)
-            {
-                Contact contact = Get(id);
-                List<Message> messages = contact.Messages;
-                return messages;
-            }
-            public void AddMessage(string id, string content)
-            {
-                Contact contact = Get(id);
-                Message message = new Message(content);
-                int new_id = contact.Messages.Count + 1;
-                message.Id = new_id.ToString();
+    public void Update(string name, string server)
+    {
+        Contact contact = Get(name);
+        contact.Server = server;
+        Delete(contact.Id);
+        Create(contact.Name, contact.Server);
+    }
+    public List<Message> GetMessages(string id)
+    {
+        Contact contact = Get(id);
+        List<Message> messages = contact.Messages;
+        return messages;
+    }
+    public void AddMessage(string id, string content)
+    {
+        Contact contact = Get(id);
+        Message message = new Message(content);
+        int new_id = contact.Messages.Count + 1;
+        message.Id = new_id.ToString();
 
-                contact.Messages.Add(new Message(content));
-                Delete(id);
-                Contacts.Add(contact);
+        contact.Messages.Add(new Message(content));
+        Delete(id);
+        Contacts.Add(contact);
 
-            }
+    }
 
-            public void AddMessage(string id, string content, bool sent)
-            {
-                Contact contact = Get(id);
-                Message message = new Message(content, sent);
+    public void AddMessage(string id, string content, bool sent)
+    {
+        Contact contact = Get(id);
+        Message message = new Message(content, sent);
 
-                int new_id = contact.Messages.Count + 1;
-                message.Id = new_id.ToString();
+        int new_id = contact.Messages.Count + 1;
+        message.Id = new_id.ToString();
 
-                contact.Messages.Add(message);
-                Delete(id);
-                Contacts.Add(contact);
+        contact.Messages.Add(message);
+        Delete(id);
+        Contacts.Add(contact);
 
-            }
+    }
 
-            public Message GetMessageWithId_2FromId_1(string user_id, string message_id)
-            {
-                Contact contact = Get(user_id);
-                Message message = contact.Messages.Find(x => x.Id == message_id);
-                return message;
-            }
-            public void DeleteMessage(string user_id, string message_id)
-            {
-                Contact contact = Contacts.Find(x => x.Id == user_id);
-                Contacts.Remove(contact);
-                Message message_to_delete = contact.Messages.Find(x => x.Id == message_id);
-                contact.Messages.Remove(message_to_delete);
-                Contacts.Add(contact);
+    public Message GetMessageWithId_2FromId_1(string user_id, string message_id)
+    {
+        Contact contact = Get(user_id);
+        Message message = contact.Messages.Find(x => x.Id == message_id);
+        return message;
+    }
+    public void DeleteMessage(string user_id, string message_id)
+    {
+        Contact contact = Contacts.Find(x => x.Id == user_id);
+        Contacts.Remove(contact);
+        Message message_to_delete = contact.Messages.Find(x => x.Id == message_id);
+        contact.Messages.Remove(message_to_delete);
+        Contacts.Add(contact);
 
-            }
+    }
 
-            public void SendNewMessage(string user_id_from, string user_id_to, string content)
-            {
-                AddMessage(user_id_from, content, true);
-                AddMessage(user_id_to, content, false);
-            }*/
-    
+    public void SendNewMessage(string user_id_from, string user_id_to, string content)
+    {
+        AddMessage(user_id_from, content, true);
+        AddMessage(user_id_to, content, false);
+    }*/
+

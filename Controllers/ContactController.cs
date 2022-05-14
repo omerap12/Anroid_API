@@ -63,6 +63,7 @@ namespace Web_API.Controllers
         [HttpGet("/api/{user_name}/contacts/{id}/messages")]
         public IActionResult GetMessagesFromUser(string user_name, string id)
         {
+            List<Message> messages = ContactService.GetMessagesBetweenUsers(user_name, id);
             return Ok(ContactService.GetMessagesBetweenUsers(user_name,id));
         }
 
@@ -73,6 +74,29 @@ namespace Web_API.Controllers
             ContactService.SendMessageToMe(user_name, id, content);
             return Ok();
         }
+
+        [HttpGet("/api/{user_name}/contacts/{other_user_id}/messages/{message_id}")]
+        public IActionResult GetSpecificMessage(string user_name, string other_user_id, string message_id)
+        {
+            return Ok(ContactService.GetSpecificMessage(user_name, other_user_id, message_id));
+        }
+
+        [HttpPut("/api/{user_name}/contacts/{other_user_id}/messages/{message_id}")]
+        public IActionResult EditSpecificMessage(string user_name, string other_user_id, string message_id,string content)
+        {
+            ContactService.EditSpecificMessage(user_name, other_user_id, message_id, content);
+            return Ok();
+        }
+
+        [HttpDelete("/api/{user_name}/contacts/{other_user_id}/messages/{message_id}")]
+        public IActionResult DeleteSpecificMessage(string user_name, string other_user_id, string message_id)
+        {
+            ContactService.DeleteSpecificMessage(user_name, other_user_id,message_id); 
+            return Ok();
+        }
+
+
+
 
         /* 
 

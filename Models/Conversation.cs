@@ -7,6 +7,7 @@ namespace WebApi.Models
         private string from;
         private string to;
         private string last;
+        private string id;
         
 
         public Conversation(string from, string to)
@@ -37,6 +38,7 @@ namespace WebApi.Models
         public void AddMessage(Message message)
         {
             this.last = message.Content;
+            message.Id =( GetMessageLength()+1 ).ToString();
             this.Messages.Add(message);
         }
         public bool IsMe(string name)

@@ -19,6 +19,12 @@ namespace Web_API.Services
         public void SendMessageToOther(string from, string to, string content);
 
         public void SendMessageToMe(string from, string to, string content);
+        public Message GetSpecificMessage(string user_name, string other_user_id, string message_id);
+
+        public void EditSpecificMessage(string user_name, string other_user_id, string message_id, string content);
+
+        public void DeleteSpecificMessage(string user_name, string other_user_id, string message_id);
+
 
 
         /*public void Delete(string id);

@@ -5,6 +5,7 @@ namespace Web_API.Models
 {
     public class Contact
     {
+        public DateTime LastDate { get; set; }
         private List<Contact> Contacts { get; set; }
         private List<Conversation> Conversations { get; set; }
 
@@ -22,6 +23,8 @@ namespace Web_API.Models
 
         public string Server { get; set; }
 
+        public string Last { get; set; }
+
         public Contact(string id, string name, string password, string server)
         {
             this.Id = id;
@@ -30,6 +33,9 @@ namespace Web_API.Models
             this.Password = password;
             this.Server = server;
             this.Conversations = new List<Conversation>();
+            this.LastDate = DateTime.Now;
+            this.Last = null;
+
         }
 
         public void AddContacts(Contact contact)
@@ -60,6 +66,17 @@ namespace Web_API.Models
             }
             return null;
         }
+
+        public Message GetSpecificMessageFromUser(string other_user_id, string id)
+        {
+            List<Message> messages = GetMessagesFromUser(other_user_id);
+            for (int i = 0; i < messages.Count; i++)
+            {
+                if (messages[i].Id == id)
+                    return messages[i];
+            }
+            return null;
+        }
         public void Delete_user(string id)
         {
             Contacts.Remove(Contacts.Find(x => x.Id == id));
@@ -74,6 +91,19 @@ namespace Web_API.Models
                     Conversations[i].AddMessage(new Message(content, sent));
                 }
             }
+            this.Last = content;
         }
+        public void EditSpecificMessage(string other_user_id, string message_id, string content)
+        {
+            Message message = GetSpecificMessageFromUser(other_user_id, message_id);
+            message.Content = content;
+
+        }
+        public void DeleteSpecificMessage(string other_user_id, string message_id)
+        {
+            List<Message> messages = GetMessagesFromUser(other_user_id);
+            messages.Remove(messages.Find(m => m.Id == message_id));
+        }
+
     }
 }
