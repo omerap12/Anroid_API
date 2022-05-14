@@ -25,6 +25,8 @@ namespace Web_API.Services
 
         public void DeleteSpecificMessage(string user_name, string other_user_id, string message_id);
 
+        public bool CheckUserInDB(string user_name, string password);
+
 
 
         /*public void Delete(string id);

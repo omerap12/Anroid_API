@@ -95,6 +95,15 @@ namespace Web_API.Controllers
             return Ok();
         }
 
+        [HttpGet("/api/{user_name}/contacts/{password}")]
+        public IActionResult CheckUserInDB(string user_name, string password)
+        {
+            if (ContactService.CheckUserInDB(user_name, password) == true)
+                return Ok();
+            return NotFound();
+        }
+
+
 
 
 
@@ -197,6 +206,6 @@ namespace Web_API.Controllers
          }
 
      }*/
-    }   
+    }
 }
 

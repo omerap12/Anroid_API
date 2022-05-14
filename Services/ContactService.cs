@@ -126,6 +126,17 @@ public class ContactService : IContactService
         contact_two.DeleteSpecificMessage(user_name, message_id);
     }
 
+
+
+
+    public bool CheckUserInDB(string user_name, string password)
+    {
+        Contact contact = Contacts.Find(x=>x.Id == user_name && x.Password == password);
+        if (contact == null)
+            return false;
+        return true;
+    }
+
 }
 
 
