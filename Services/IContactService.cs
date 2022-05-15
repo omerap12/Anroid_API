@@ -28,7 +28,6 @@ namespace Web_API.Services
         public bool CheckUserInDB(string user_name, string password);
 
 
-
         /*public void Delete(string id);
 
         public void Create(string name, string server);

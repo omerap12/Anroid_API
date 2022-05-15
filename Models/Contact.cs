@@ -77,6 +77,7 @@ namespace Web_API.Models
             }
             return null;
         }
+
         public void Delete_user(string id)
         {
             Contacts.Remove(Contacts.Find(x => x.Id == id));
