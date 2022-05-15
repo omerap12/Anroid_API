@@ -115,6 +115,12 @@ namespace Web_API.Controllers
             return BadRequest();
         }
 
+        [HttpGet("/api/contacts")]
+        public IActionResult getAllContactsInJson()
+        {
+            return Ok(ContactService.GetAllContacts());
+        }
+
 
         /* 
 
