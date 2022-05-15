@@ -103,12 +103,12 @@ namespace Web_API.Controllers
             return NotFound();
         }
 
-        [HttpPost("/api/{user_id}/contacts/{nick_name}/{password}")]
-        public IActionResult AddNewUserInDB(string user_id, string nick_name, string password)
+        [HttpPost("/api/contacts/")]
+        public IActionResult AddNewUserInDB(string user_id, string nick_name, string password,string server)
         {
             if (ContactService.CheckUserInDB(user_id, password) == false)
             {
-                Contact new_contact = new Contact(user_id, nick_name, password, "TalkToMe");
+                Contact new_contact = new Contact(user_id, nick_name, password, server);
                 ContactService.GetAllContacts().Add(new_contact);
                 return Ok();
             }   

@@ -12,6 +12,9 @@ public class ContactService : IContactService
     {
         Contact contact = new Contact("TSM_Omer", "Omer", "12345", "TalkToMe");
         Contact contact_two = new Contact("Avitalos", "Avital", "12345", "TalkToMe");
+        Contact contact_three = new Contact("Maron", "MaronChok", "666", "TalkToMe");
+        Contacts.Add(contact_three);
+
         contact.Last = "Hi avital";
         contact_two.Last = "Hi avital";
 
@@ -62,7 +65,9 @@ public class ContactService : IContactService
     public List<Contact> GetContacts(string user_id)
     {
         Contact contact = Contacts.Find(x => x.Id == user_id);
-        return contact.GetContactsList();
+        if (contact != null)
+            return contact.GetContactsList();
+        return null;
     }
 
     public void Delete(string user_name, string id)
@@ -128,7 +133,7 @@ public class ContactService : IContactService
 
     public bool CheckUserInDB(string user_name, string password)
     {
-        Contact contact = Contacts.Find(x=>x.Id == user_name && x.Password == password);
+        Contact contact = Get(user_name);
         if (contact == null)
             return false;
         return true;
