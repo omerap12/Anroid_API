@@ -103,7 +103,7 @@ namespace Web_API.Controllers
             return NotFound();
         }
 
-        [HttpPost("/api/{user_id}/contacts/{password}")]
+        [HttpPost("/api/{user_id}/contacts/{nick_name}/{password}")]
         public IActionResult AddNewUserInDB(string user_id, string nick_name, string password)
         {
             if (ContactService.CheckUserInDB(user_id, password) == false)
