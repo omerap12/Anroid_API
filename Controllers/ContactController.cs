@@ -133,6 +133,22 @@ namespace Web_API.Controllers
             return Ok();
         }
 
+        [HttpPost("/api/invitations/")]
+        public IActionResult Inivitation([FromBody] Inivitation invite)
+        {
+            string from = invite.from;
+            string to = invite.to;
+            string server = invite.server;
+            ContactService.CreateNewContact(from, to, to, server);
+
+            return Ok();
+        }
+
+
+
+
+
+
 
 
         /* 
