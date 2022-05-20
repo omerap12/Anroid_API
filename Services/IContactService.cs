@@ -27,6 +27,8 @@ namespace Web_API.Services
 
         public bool CheckUserInDB(string user_name, string password);
 
+        public string GetUserServer(string user_name);
+
      
 
 

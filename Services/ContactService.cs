@@ -10,9 +10,9 @@ public class ContactService : IContactService
 
     public ContactService()
     {
-        Contact contact = new Contact("TSM_Omer", "Omer", "12345", "TalkToMe");
-        Contact contact_two = new Contact("Avitalos", "Avital", "12345", "TalkToMe");
-        Contact contact_three = new Contact("Maron", "MaronChok", "666", "TalkToMe");
+        Contact contact = new Contact("TSM_Omer", "Omer", "12345", "localhost:7030");
+        Contact contact_two = new Contact("Avitalos", "Avital", "12345", "localhost:7030");
+        Contact contact_three = new Contact("Maron", "MaronChok", "666", "localhost:7030");
         Contacts.Add(contact_three);
 
         contact.Last = "Hi avital";
@@ -137,6 +137,12 @@ public class ContactService : IContactService
         if (contact == null)
             return false;
         return true;
+    }
+
+    public string GetUserServer(string user_name)
+    {
+        Contact contact = Get(user_name);
+        return contact.Server;
     }
 
 }
