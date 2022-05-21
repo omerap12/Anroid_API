@@ -51,15 +51,48 @@ public class ContactService : IContactService
 
     public void CreateNewContact(string add_to, string id, string name, string server)
     {
-        Contact new_one = new Contact(id, name, "password", server);
-        Contact addTo = Contacts.Find(x => x.Id == add_to);
-        Conversation conversation_one = new Conversation(id, add_to);
-        Conversation conversation_two = new Conversation(add_to, id);
-        addTo.AddContacts(new_one);
-        new_one.AddContacts(addTo);
+        //check if contact is in db already
+        Contact contcat = Get(id);
+        Contact request = Get(add_to);
+        
+        //need to add ne user
+        if (contcat == null)
+        {
+            Contact new_one = new Contact(id, name, "password", server);
+            Contact addTo = Contacts.Find(x => x.Id == add_to);
+            Conversation conversation_one = new Conversation(id, add_to);
+            Conversation conversation_two = new Conversation(add_to, id);
+            addTo.AddContacts(new_one);
+            new_one.AddContacts(addTo);
+            addTo.AddConversation(conversation_one);
+            new_one.AddConversation(conversation_two);
+        }
+        else
+        {
+            if (request.IsFriendOfMe(id))
+            {
+                return;
+            }
+            else
+            {
+                contcat.AddContacts(request);
+                request.AddContacts(contcat);
+                Conversation conversation_one = new Conversation(id, add_to);
+                Conversation conversation_two = new Conversation(add_to, id);
 
-        addTo.AddConversation(conversation_one);
-        new_one.AddConversation(conversation_two);
+                contcat.AddConversation(conversation_one);
+                request.AddConversation(conversation_two);
+
+            }
+
+        }
+
+        
+    }
+    public bool Check_if_friends(Contact user_name, string other_user_name)
+    {
+        return user_name.IsFriendOfMe(other_user_name);
+
     }
 
     public List<Contact> GetContacts(string user_id)

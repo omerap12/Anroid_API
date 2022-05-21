@@ -25,6 +25,14 @@ namespace Web_API.Models
 
         public string Last { get; set; }
 
+        public bool IsFriendOfMe(string id)
+        {
+            Contact contact = Contacts.Find(x => x.Id == id);
+            if (contact == null)
+                return false;
+            return true;
+        }
+
         public Contact(string id, string name, string password, string server)
         {
             this.Id = id;

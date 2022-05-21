@@ -29,6 +29,8 @@ namespace Web_API.Services
 
         public string GetUserServer(string user_name);
 
+        public bool Check_if_friends(Contact user_name, string other_user_name);
+
      
 
 
