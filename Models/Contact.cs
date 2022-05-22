@@ -114,5 +114,33 @@ namespace Web_API.Models
             messages.Remove(messages.Find(m => m.Id == message_id));
         }
 
+        public string GetLast(string other_user)
+        {
+            Conversation conversation = Conversations.Find(c => c.to == other_user || c.from == other_user);
+            if (conversation == null)
+                return null;
+            return conversation.Last.Content;
+        }
+
+        public List<ContactFirstAPI> GetContacts()
+        {
+            List<ContactFirstAPI> contacts = new List<ContactFirstAPI>();
+            foreach (Conversation conversation in Conversations)
+            {
+                string from = conversation.from;
+                string to = conversation.to;
+                string name_to_add = "";
+                string Last = "";
+                string server_to_add;
+                if (from == Id)
+                    name_to_add = to;
+                else
+                    name_to_add= from;
+                Last = conversation.last;
+                contacts.Add(new ContactFirstAPI(name_to_add, name_to_add, null, Last, conversation.lastdate));
+            }
+            return contacts;
+        }
+
     }
 }

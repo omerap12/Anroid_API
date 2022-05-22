@@ -19,7 +19,8 @@ namespace Web_API.Controllers
         [HttpGet("/api/{user_id}/contacts")]
         public IActionResult Get(string user_id)
         {
-            return Ok(ContactService.GetContacts(user_id));
+            List< ContactFirstAPI > contacts = ContactService.GetContacts(user_id);
+            return Ok(contacts);
 
         }
         [HttpPost("/api/{user_id}/contacts")]

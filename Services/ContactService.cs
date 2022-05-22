@@ -95,13 +95,17 @@ public class ContactService : IContactService
 
     }
 
-    public List<Contact> GetContacts(string user_id)
+    public List<ContactFirstAPI> GetContacts(string user_id)
     {
         Contact contact = Contacts.Find(x => x.Id == user_id);
-        if (contact != null)
-            return contact.GetContactsList();
-        return null;
+        List<ContactFirstAPI> contacts = contact.GetContacts();
+        for (int i = 0; i < contacts.Count; i++)
+        {
+            contacts[i].server = GetUserServer(contacts[i].id);
+        }
+        return contacts;
     }
+
 
     public void Delete(string user_name, string id)
     {
@@ -177,6 +181,7 @@ public class ContactService : IContactService
         Contact contact = Get(user_name);
         return contact.Server;
     }
+
 
 }
 

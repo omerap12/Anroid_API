@@ -3,11 +3,12 @@ namespace WebApi.Models
 {
     public class Conversation
     {
-        private List<Message> Messages;
-        private string from;
-        private string to;
-        private string last;
-        private string id;
+        public List<Message> Messages;
+        public string from;
+        public string to;
+        public string last;
+        public string id;
+        public string lastdate;
         
 
         public Conversation(string from, string to)
@@ -16,6 +17,7 @@ namespace WebApi.Models
             this.to = to;
             Messages = new List<Message>();
         }
+        public Message Last { get; set; }
 
         public List<Message> GetAllMessages()
         {
@@ -28,7 +30,6 @@ namespace WebApi.Models
             return message;
         }
 
-        public Message Last { get; set; }
 
         public int GetMessageLength()
         {
@@ -40,6 +41,7 @@ namespace WebApi.Models
             this.last = message.Content;
             message.Id =( GetMessageLength()+1 ).ToString();
             this.Messages.Add(message);
+            this.lastdate = DateTime.Now.ToString();
         }
         public bool IsMe(string name)
         {
