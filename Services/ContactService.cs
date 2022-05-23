@@ -1,6 +1,6 @@
 ﻿using Web_API.Models;
 using WebApi.Models;
-
+using WebApi.View;
 namespace Web_API.Services;
 
 public class ContactService : IContactService
@@ -38,11 +38,6 @@ public class ContactService : IContactService
 
     }
 
-    /*public void Create(string user_name)
-    {
-        return;
-    }*/
-
 
     public List<Contact> GetAllContacts()
     {
@@ -54,7 +49,7 @@ public class ContactService : IContactService
         //check if contact is in db already
         Contact contcat = Get(id);
         Contact request = Get(add_to);
-        
+
         //need to add ne user
         if (contcat == null)
         {
@@ -87,7 +82,7 @@ public class ContactService : IContactService
 
         }
 
-        
+
     }
     public bool Check_if_friends(Contact user_name, string other_user_name)
     {
@@ -157,7 +152,7 @@ public class ContactService : IContactService
     {
         Contact contact = Get(user_name);
         Contact contact_two = Get(other_user_id);
-        contact.EditSpecificMessage(other_user_id,message_id,content);
+        contact.EditSpecificMessage(other_user_id, message_id, content);
         contact_two.EditSpecificMessage(user_name, message_id, content);
     }
     public void DeleteSpecificMessage(string user_name, string other_user_id, string message_id)
@@ -182,105 +177,11 @@ public class ContactService : IContactService
         return contact.Server;
     }
 
+    public ContactFirstAPI GetApiContact(string username, string id)
+    {
+        Contact contact = Get(username);
+        return new ContactFirstAPI(contact.Id, contact.Name, contact.Server, contact.GetLast(id), contact.GetLastDate(id));
 
+    }
 }
-
-
-/*
-
-    public void Add(Contact contact)
-    {
-        Contacts.Add(contact);
-    }
-
-    public void Edit(int id, string user_name, string description, int grade)
-    {
-        return;
-    }
-
-    public Contact Get(string id)
-    {
-        Contact contact = Contacts.Find(x=>x.Id == id);
-        return contact;
-    }
-
-    public List<Contact> GetAll()
-    {
-        return Contacts;
-    }
-
-    public void Create(string name, string server)
-    {
-        Contact contact = new Contact(name, name);
-        contact.Server = server;
-        Contacts.Add(contact);
-
-    }
-
-    public void Delete(string id)
-    {
-        Contacts.Remove(Get(id));
-    }
-
-    public void Update(string name, string server)
-    {
-        Contact contact = Get(name);
-        contact.Server = server;
-        Delete(contact.Id);
-        Create(contact.Name, contact.Server);
-    }
-    public List<Message> GetMessages(string id)
-    {
-        Contact contact = Get(id);
-        List<Message> messages = contact.Messages;
-        return messages;
-    }
-    public void AddMessage(string id, string content)
-    {
-        Contact contact = Get(id);
-        Message message = new Message(content);
-        int new_id = contact.Messages.Count + 1;
-        message.Id = new_id.ToString();
-
-        contact.Messages.Add(new Message(content));
-        Delete(id);
-        Contacts.Add(contact);
-
-    }
-
-    public void AddMessage(string id, string content, bool sent)
-    {
-        Contact contact = Get(id);
-        Message message = new Message(content, sent);
-
-        int new_id = contact.Messages.Count + 1;
-        message.Id = new_id.ToString();
-
-        contact.Messages.Add(message);
-        Delete(id);
-        Contacts.Add(contact);
-
-    }
-
-    public Message GetMessageWithId_2FromId_1(string user_id, string message_id)
-    {
-        Contact contact = Get(user_id);
-        Message message = contact.Messages.Find(x => x.Id == message_id);
-        return message;
-    }
-    public void DeleteMessage(string user_id, string message_id)
-    {
-        Contact contact = Contacts.Find(x => x.Id == user_id);
-        Contacts.Remove(contact);
-        Message message_to_delete = contact.Messages.Find(x => x.Id == message_id);
-        contact.Messages.Remove(message_to_delete);
-        Contacts.Add(contact);
-
-    }
-
-    public void SendNewMessage(string user_id_from, string user_id_to, string content)
-    {
-        AddMessage(user_id_from, content, true);
-        AddMessage(user_id_to, content, false);
-    }*/
 

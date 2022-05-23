@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Web_API.Models;
 using Web_API.Services;
 using WebApi.Models;
+using WebApi.View;
 
 namespace Web_API.Controllers
 {
@@ -30,8 +31,8 @@ namespace Web_API.Controllers
             return Ok();
         }
 
-        [HttpGet("api/contacts/{id}")]
-        public IActionResult Details(string id)
+        [HttpGet("api/contacts/{user_name}/{id}")]
+        public IActionResult Details(string user_name, string id)
         {
             if (id == null)
             {
@@ -42,8 +43,7 @@ namespace Web_API.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(contact);
+            return Ok(ContactService.GetApiContact(user_name, id));
         }
 
 

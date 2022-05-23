@@ -1,5 +1,6 @@
 ﻿using Web_API.Models;
 using WebApi.Models;
+using WebApi.View;
 
 namespace Web_API.Services
 {
@@ -31,5 +32,6 @@ namespace Web_API.Services
         public string GetUserServer(string user_name);
 
         public bool Check_if_friends(Contact user_name, string other_user_name);
+        public ContactFirstAPI GetApiContact(string username, string id);
     }
 }

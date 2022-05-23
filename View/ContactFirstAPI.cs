@@ -1,4 +1,6 @@
-﻿namespace WebApi.Models
+﻿using WebApi.Models;
+using Web_API.Models;
+namespace WebApi.View
 {
     public class ContactFirstAPI
     {

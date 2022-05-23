@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using WebApi.Models;
-
+using WebApi.View;
 namespace Web_API.Models
 {
     public class Contact
@@ -119,7 +119,15 @@ namespace Web_API.Models
             Conversation conversation = Conversations.Find(c => c.to == other_user || c.from == other_user);
             if (conversation == null)
                 return null;
-            return conversation.Last.Content;
+            return conversation.last;
+        }
+
+        public string GetLastDate(string other_user)
+        {
+            Conversation conversation = Conversations.Find(c => c.to == other_user || c.from == other_user);
+            if (conversation == null)
+                return null;
+            return conversation.lastdate;
         }
 
         public List<ContactFirstAPI> GetContacts()
