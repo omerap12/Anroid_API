@@ -44,6 +44,17 @@ public class ContactService : IContactService
         return Contacts;
     }
 
+    public List<ContactFirstAPI> GetAllContactsAPI()
+    {
+        List<ContactFirstAPI> contacts = new List<ContactFirstAPI>();
+        List <Contact> all_contacts = GetAllContacts();
+        for(int i=0; i < all_contacts.Count ; i++)
+        {
+            contacts.Add(new ContactFirstAPI(all_contacts[i].Id, all_contacts[i].Name, all_contacts[i].Server, all_contacts[i].Last, all_contacts[i].LastDate.ToString()));
+        }
+        return contacts;
+    }
+
     public void CreateNewContact(string add_to, string id, string name, string server)
     {
         //check if contact is in db already
@@ -109,12 +120,11 @@ public class ContactService : IContactService
 
     }
 
-    public void Edit(string user_name, string id, string password, string server)
+    public void Edit(string user_name, string id, string server)
     {
         Contact contact = Contacts.Find(x => x.Id == user_name);
         Delete(user_name, id);
         contact.Name = id;
-        contact.Password = password;
         contact.Server = server;
         Contacts.Add(contact);
 
@@ -128,7 +138,6 @@ public class ContactService : IContactService
     {
         Contact contact = Get(user_name);
         return contact.GetMessagesFromUser(id);
-
     }
 
     public void SendMessageToOther(string from, string to, string content)

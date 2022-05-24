@@ -24,11 +24,14 @@ namespace Web_API.Controllers
             return Ok(contacts);
 
         }
+
+        //response need to be empty
         [HttpPost("/api/{user_id}/contacts")]
         public IActionResult CreateNewConversion(string id, string name, string server, string user_id)
         {
             ContactService.CreateNewContact(user_id, id, name, server);
-            return Ok();
+            //return Created("/api/{user_id}/contacts", new LessInfoContactAPI(id, name, server));
+            return Created("/api/{user_id}/contacts", "");
         }
 
         [HttpGet("api/contacts/{user_name}/{id}")]
@@ -46,21 +49,29 @@ namespace Web_API.Controllers
             return Ok(ContactService.GetApiContact(user_name, id));
         }
 
-
+        // remove the password according to the hemi's request in the exercise.
         [HttpPut("api/contacts/{id}")]
+        public IActionResult Edit(string id, string user_name, string server)
+        {
+            ContactService.Edit(id, user_name, server);
+            return NoContent();
+        }
+
+        /*[HttpPut("api/contacts/{id}")]
         public IActionResult Edit(string id, string user_name, string password, string server)
         {
             ContactService.Edit(id, user_name, password, server);
             return Ok();
-        }
+        }*/
 
         [HttpDelete("api/{user_name}/contacts/{id}")]
         public IActionResult Delete(string user_name, string id)
         {
             ContactService.Delete(user_name, id);
-            return Ok();
+            return NoContent();
         }
 
+        // api fields are ok and no need to change them
         [HttpGet("/api/{user_name}/contacts/{id}/messages")]
         public IActionResult GetMessagesFromUser(string user_name, string id)
         {
@@ -68,12 +79,13 @@ namespace Web_API.Controllers
             return Ok(ContactService.GetMessagesBetweenUsers(user_name, id));
         }
 
+        //response need to be empty
         [HttpPost("/api/{user_name}/contacts/{id}/messages")]
         public IActionResult SendMessage(string user_name, string id, string content)
         {
             ContactService.SendMessageToOther(user_name, id, content);
             ContactService.SendMessageToMe(user_name, id, content);
-            return Ok();
+            return Created("/api/{user_name}/contacts/{id}/messages","");
         }
 
         [HttpGet("/api/{user_name}/contacts/{other_user_id}/messages/{message_id}")]
@@ -93,9 +105,10 @@ namespace Web_API.Controllers
         public IActionResult DeleteSpecificMessage(string user_name, string other_user_id, string message_id)
         {
             ContactService.DeleteSpecificMessage(user_name, other_user_id, message_id);
-            return Ok();
+            return NoContent();
         }
 
+        
         [HttpGet("/api/{user_name}/contacts/{password}")]
         public IActionResult CheckUserInDB(string user_name, string password)
         {
@@ -104,6 +117,7 @@ namespace Web_API.Controllers
             return NotFound();
         }
 
+        
         [HttpPost("/api/contacts/")]
         public IActionResult AddNewUserInDB(string user_id, string nick_name, string password, string server)
         {
@@ -111,15 +125,16 @@ namespace Web_API.Controllers
             {
                 Contact new_contact = new Contact(user_id, nick_name, password, server);
                 ContactService.GetAllContacts().Add(new_contact);
-                return Ok();
+                return Created("/api/contacts/","");
             }
             return BadRequest();
         }
 
+
         [HttpGet("/api/contacts")]
         public IActionResult getAllContactsInJson()
         {
-            return Ok(ContactService.GetAllContacts());
+            return Ok(ContactService.GetAllContactsAPI());
         }
 
 
@@ -131,7 +146,7 @@ namespace Web_API.Controllers
             string content = transfer.content;
             SendMessage(from, to, content);
 
-            return Ok();
+            return Created("/api/transfer/","");
         }
 
         [HttpPost("/api/invitations/")]
@@ -142,8 +157,10 @@ namespace Web_API.Controllers
             string server = invite.server;
             ContactService.CreateNewContact(from, to, to, server);
 
-            return Ok();
+            return Created("/api/invitations/", "");
         }
+
+
         [HttpGet("/api/contacts/servername/{user_name}")]
         public IActionResult GetUserServer(string user_name)
         {

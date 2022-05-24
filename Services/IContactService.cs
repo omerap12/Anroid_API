@@ -8,6 +8,8 @@ namespace Web_API.Services
     {
         public List<Contact> GetAllContacts();
 
+        public List<ContactFirstAPI> GetAllContactsAPI();
+
         public List<ContactFirstAPI> GetContacts(string user_id);
         public void CreateNewContact(string add_to, string id, string name, string server);
 
@@ -15,7 +17,7 @@ namespace Web_API.Services
 
         public void Delete(string user_name, string id);
 
-        public void Edit(string id, string user_name, string password, string server);
+        public void Edit(string id, string user_name, string server);
         public List<Message> GetMessagesBetweenUsers(string user_name, string id);
 
         public void SendMessageToOther(string from, string to, string content);
