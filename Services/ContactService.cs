@@ -176,9 +176,14 @@ public class ContactService : IContactService
     public bool CheckUserInDB(string user_name, string password)
     {
         Contact contact = Get(user_name);
+        //user does not exist
         if (contact == null)
             return false;
-        return true;
+        if (contact.Password == password && contact.Id == user_name)
+        {
+            return true;
+        }
+        return false;
     }
 
     public string GetUserServer(string user_name)

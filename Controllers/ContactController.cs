@@ -125,8 +125,15 @@ namespace Web_API.Controllers
             return NotFound();
         }
 
-        
+
         [HttpPost("/api/contacts/")]
+        public IActionResult AddNewUserInDB([FromBody] Contact contact)
+        {
+            ContactService.GetAllContacts().Add(contact);
+            return Created("/api/contacts/", "");
+        }
+
+        /*[HttpPost("/api/contacts/")]
         public IActionResult AddNewUserInDB(string user_id, string nick_name, string password, string server)
         {
             if (ContactService.CheckUserInDB(user_id, password) == false)
@@ -136,7 +143,7 @@ namespace Web_API.Controllers
                 return Created("/api/contacts/","");
             }
             return BadRequest();
-        }
+        }*/
 
 
         [HttpGet("/api/contacts")]
