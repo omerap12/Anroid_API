@@ -4,6 +4,8 @@ using Web_API.Models;
 using Web_API.Services;
 using WebApi.Models;
 using WebApi.View;
+using Microsoft.AspNetCore.SignalR;
+using WebApi.Hubs;
 
 namespace Web_API.Controllers
 {
@@ -11,9 +13,10 @@ namespace Web_API.Controllers
     public class ContactController : ControllerBase
     {
         private static IContactService ContactService = new ContactService();
-        public ContactController()
+        private IHubContext<MyHub> hub;
+        public ContactController(IHubContext<MyHub> hub)
         {
-
+            this.hub = hub;
 
         }
 
@@ -30,6 +33,8 @@ namespace Web_API.Controllers
         public IActionResult CreateNewConversion(string id, string name, string server, string user_id)
         {
             ContactService.CreateNewContact(user_id, id, name, server);
+            hub.Clients.All.SendAsync("InviteUpdate", id);
+
             //return Created("/api/{user_id}/contacts", new LessInfoContactAPI(id, name, server));
             return Created("/api/{user_id}/contacts", "");
         }
@@ -85,6 +90,9 @@ namespace Web_API.Controllers
         {
             ContactService.SendMessageToOther(user_name, id, content);
             ContactService.SendMessageToMe(user_name, id, content);
+            hub.Clients.All.SendAsync("MessageUpdate", id);
+            hub.Clients.All.SendAsync("MessageUpdate", user_name);
+
             return Created("/api/{user_name}/contacts/{id}/messages","");
         }
 
@@ -145,7 +153,7 @@ namespace Web_API.Controllers
             string to = transfer.to;
             string content = transfer.content;
             SendMessage(from, to, content);
-
+            hub.Clients.All.SendAsync("MessageUpdate",from, to);
             return Created("/api/transfer/","");
         }
 
@@ -155,7 +163,8 @@ namespace Web_API.Controllers
             string from = invite.from;
             string to = invite.to;
             string server = invite.server;
-            ContactService.CreateNewContact(from, to, to, server);
+            ContactService.AddNewFromOtherServer(from, to, server);
+            hub.Clients.All.SendAsync("InviteUpdate", to);
 
             return Created("/api/invitations/", "");
         }

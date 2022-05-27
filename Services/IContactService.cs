@@ -35,5 +35,7 @@ namespace Web_API.Services
 
         public bool Check_if_friends(Contact user_name, string other_user_name);
         public ContactFirstAPI GetApiContact(string username, string id);
+
+        public void AddNewFromOtherServer(string from,string to,string server);
     }
 }

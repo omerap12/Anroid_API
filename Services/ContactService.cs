@@ -66,6 +66,7 @@ public class ContactService : IContactService
         {
             Contact new_one = new Contact(id, name, "password", server);
             Contact addTo = Contacts.Find(x => x.Id == add_to);
+            Contacts.Add(new_one);
             Conversation conversation_one = new Conversation(id, add_to);
             Conversation conversation_two = new Conversation(add_to, id);
             addTo.AddContacts(new_one);
@@ -190,7 +191,24 @@ public class ContactService : IContactService
     {
         Contact contact = Get(username);
         return new ContactFirstAPI(contact.Id, contact.Name, contact.Server, contact.GetLast(id), contact.GetLastDate(id));
+    }
+    public void AddNewFromOtherServer(string from, string to, string server)
+    {
+        Contact contcat = Get(to);
+        Contact request = Get(from);
 
+        //need to add ne user
+        if (request == null)
+        {
+            Contact new_one = new Contact(from, from, "password", server);
+            Contacts.Add(new_one);
+            Conversation conversation_one = new Conversation(from, to);
+            Conversation conversation_two = new Conversation(to,from);
+            contcat.AddContacts(new_one);
+            new_one.AddContacts(contcat);
+            contcat.AddConversation(conversation_one);
+            new_one.AddConversation(conversation_two);
+        }
     }
 }
 
