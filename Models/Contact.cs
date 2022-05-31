@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WebApi.Models;
 using WebApi.View;
 namespace Web_API.Models
@@ -10,6 +11,7 @@ namespace Web_API.Models
         private List<Conversation> Conversations { get; set; }
 
         [Key]
+        [ForeignKey("Id")]
         public string Id { get; set; }
         public string Name { get; set; }
 
@@ -44,6 +46,9 @@ namespace Web_API.Models
             this.LastDate = DateTime.Now;
             this.Last = null;
 
+        }
+        public Contact()
+        {
         }
 
         public void AddContacts(Contact contact)

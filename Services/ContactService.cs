@@ -1,6 +1,8 @@
 ﻿using Web_API.Models;
 using WebApi.Models;
 using WebApi.View;
+using WebShop;
+
 namespace Web_API.Services;
 
 public class ContactService : IContactService
@@ -10,33 +12,8 @@ public class ContactService : IContactService
 
     public ContactService()
     {
-        Contact contact = new Contact("TSM_Omer", "Omer", "12345", "localhost:7030");
-        Contact contact_two = new Contact("Avitalos", "Avital", "12345", "localhost:7030");
-        Contact contact_three = new Contact("Maron", "MaronChok", "666", "localhost:7030");
-        Contacts.Add(contact_three);
-
-        contact.Last = "Hi avital";
-        contact_two.Last = "Hi avital";
-
-
-        contact.AddContacts(contact_two);
-        contact_two.AddContacts(contact);
-
-
-        Conversation Conversation_one = new Conversation("TSM_Omer", "Avitalos");
-        Conversation_one.AddMessage(new Message("Hi avital", true));
-
-        Conversation Conversation_two = new Conversation("TSM_Omer", "Avitalos");
-        Conversation_two.AddMessage(new Message("Hi avital", false));
-
-        contact.AddConversation(Conversation_one);
-        contact_two.AddConversation(Conversation_two);
-
-        Contacts.Add(contact);
-        Contacts.Add(contact_two);
-
-
     }
+
 
 
     public List<Contact> GetAllContacts()
@@ -46,13 +23,17 @@ public class ContactService : IContactService
 
     public List<ContactFirstAPI> GetAllContactsAPI()
     {
-        List<ContactFirstAPI> contacts = new List<ContactFirstAPI>();
-        List <Contact> all_contacts = GetAllContacts();
-        for(int i=0; i < all_contacts.Count ; i++)
+        using (var database = new MainContext())
         {
-            contacts.Add(new ContactFirstAPI(all_contacts[i].Id, all_contacts[i].Name, all_contacts[i].Server, all_contacts[i].Last, all_contacts[i].LastDate.ToString()));
+            var contacts = database.Contacts.ToList();
+            List<ContactFirstAPI> contactsAPI = new List<ContactFirstAPI>();
+            for (int i = 0; i < contacts.Count; i++)
+            {
+                contactsAPI.Add(new ContactFirstAPI(contacts[i].Id, contacts[i].Name, contacts[i].Server, contacts[i].Last, contacts[i].LastDate.ToString()));
+            }
+            return contactsAPI;
         }
-        return contacts;
+        
     }
 
     public void CreateNewContact(string add_to, string id, string name, string server)
@@ -102,15 +83,28 @@ public class ContactService : IContactService
 
     }
 
+    /*public List<Contact> GetContacts()
+   {
+       using (var database = new MainContext())
+       {
+           var contacts = database.Contacts.ToList();
+       }
+   }*/
+
     public List<ContactFirstAPI> GetContacts(string user_id)
     {
-        Contact contact = Contacts.Find(x => x.Id == user_id);
-        List<ContactFirstAPI> contacts = contact.GetContacts();
-        for (int i = 0; i < contacts.Count; i++)
+        using (var database = new MainContext())
         {
-            contacts[i].server = GetUserServer(contacts[i].id);
+            var contacts = database.Contacts.ToList();
+            Contact contact = contacts.Find(x => x.Id == user_id);
+            List<ContactFirstAPI> c = contact.GetContacts();
+            for (int i = 0; i < c.Count; i++)
+            {
+                c[i].server = GetUserServer(contacts[i].Id);
+            }
+            return c;
         }
-        return contacts;
+        
     }
 
 

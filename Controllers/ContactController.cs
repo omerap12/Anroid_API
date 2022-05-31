@@ -126,14 +126,6 @@ namespace Web_API.Controllers
         }
 
 
-        /*[HttpPost("/api/contacts/")]
-        public IActionResult AddNewUserInDB([FromBody] Contact contact)
-        {
-            ContactService.GetAllContacts().Add(contact);
-            return Created("/api/contacts/", "");
-        }*/
-
-
 
         [HttpPost("/api/contacts/{user_id}/{nick_name}/{password}/{server}")]
         public IActionResult AddNewUserInDB(string user_id, string nick_name, string password, string server)

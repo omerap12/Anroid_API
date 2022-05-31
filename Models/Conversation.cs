@@ -1,10 +1,13 @@
-﻿using Web_API.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Web_API.Models;
 namespace WebApi.Models
 {
     public class Conversation
     {
         public List<Message> Messages;
+        [ForeignKey("Id")]
         public string from;
+        [ForeignKey("Id")]
         public string to;
         public string last;
         public string id;
@@ -16,6 +19,9 @@ namespace WebApi.Models
             this.from = from;
             this.to = to;
             Messages = new List<Message>();
+        }
+        public Conversation()
+        {
         }
         public Message Last { get; set; }
 
