@@ -3,6 +3,7 @@ using WebApi.Models;
 using WebApi.View;
 using WebShop;
 
+
 namespace Web_API.Services;
 
 public class ContactService : IContactService
@@ -22,8 +23,8 @@ public class ContactService : IContactService
     }
 
     public List<ContactFirstAPI> GetAllContactsAPI()
-    {
-        using (var database = new MainContext())
+    { 
+        using (var database = new ItemsContext())
         {
             var contacts = database.Contacts.ToList();
             List<ContactFirstAPI> contactsAPI = new List<ContactFirstAPI>();
@@ -93,7 +94,7 @@ public class ContactService : IContactService
 
     public List<ContactFirstAPI> GetContacts(string user_id)
     {
-        using (var database = new MainContext())
+        using (var database = new ItemsContext())
         {
             var contacts = database.Contacts.ToList();
             Contact contact = contacts.Find(x => x.Id == user_id);

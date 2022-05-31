@@ -10,7 +10,7 @@ using WebShop;
 
 namespace WebApi.Migrations
 {
-    [DbContext(typeof(MainContext))]
+    [DbContext(typeof(ItemsContext))]
     partial class MainContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

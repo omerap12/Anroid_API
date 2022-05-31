@@ -11,7 +11,7 @@ using WebShop;
 
 namespace WebApi.Migrations
 {
-    [DbContext(typeof(MainContext))]
+    [DbContext(typeof(ItemsContext))]
     [Migration("20220531143419_InitialMigration")]
     partial class InitialMigration
     {
