@@ -7,7 +7,7 @@ namespace Web_API.Models
     {
         [Key]
         public string Id { get; set; }
-        public Contact Contact { get; set; }
+        public User User { get; set; }
         public string Content { get; set; }
         public string Created { get; set; }
         public Conversation RefConversation { get; set; }
