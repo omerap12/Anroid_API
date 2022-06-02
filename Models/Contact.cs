@@ -1,160 +1,46 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using WebApi.Models;
-using WebApi.View;
-namespace Web_API.Models
+﻿using Web_API.Models;
+using WebShop;
+
+namespace WebApi.Models
 {
     public class Contact
     {
-        public DateTime LastDate { get; set; }
-        public List<Contact> Contacts { get; set; }
-        public List<Conversation> Conversations { get; set; }
-
-        public Contact RefContact { get; set; }
-        [Key]
-        [ForeignKey("Id")]
-        public string Id { get; set; }
-        public string Name { get; set; }
-
+        public int Id { get; set; }
         public string ContactId { get; set; }
-
-        public string CreatedDate { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        public string Server { get; set; }
-
+        public string Name { get; set; }
         public string Last { get; set; }
+        public string Server { get; set; }
+        public string Image { get; set; }
+        public DateTime? LastDate { get; set; }
+        public string IsContactOf { get; set; }
+        public User RefUser { get; set; }
 
-        public bool IsFriendOfMe(string id)
+        public int GetId()
         {
-            Contact contact = Contacts.Find(x => x.Id == id);
-            if (contact == null)
-                return false;
-            return true;
-        }
-
-        public Contact(string id, string name, string password, string server)
-        {
-            this.Id = id;
-            this.Name = name;
-            this.Contacts = new List<Contact>();
-            this.Password = password;
-            this.Server = server;
-            this.Conversations = new List<Conversation>();
-            this.LastDate = DateTime.Now;
-            this.Last = null;
-
+            using(var d = new ItemsContext())
+            {
+                var maxId = d.Contacts.ToList().Max(p => p.Id);
+                return maxId + 1;
+            }
         }
         public Contact()
         {
-        }
 
-        public void AddContacts(Contact contact)
-        {
-            this.Contacts.Add(contact);
         }
-        public void AddConversation(Conversation conversation)
+        public Contact(string userId, string name, string server, string last, DateTime? lastDate, string isContactOf)
         {
-            this.Conversations.Add(conversation);
-        }
-        public List<Contact> GetContactsList()
-        {
-            return this.Contacts;
-        }
-        public List<Conversation> GetConversations ()
-        {
-            return this.Conversations;
-        }
-
-        public List<Message> GetMessagesFromUser(string id)
-        {
-            for (int i = 0; i< Conversations.Count; i++)
+            Id = GetId();
+            ContactId = userId;
+            Name = name;
+            Last = last;
+            Server = server;
+            Image = String.Empty;
+            LastDate = lastDate;
+            IsContactOf = isContactOf;
+            using (var d = new ItemsContext())
             {
-                if (Conversations[i].IsMe(id) == true)
-                {
-                    return Conversations[i].GetAllMessages();
-                }
+                RefUser = d.Users.ToList().Find(p => p.Id == userId);
             }
-            return null;
         }
-
-        public Message GetSpecificMessageFromUser(string other_user_id, string id)
-        {
-            List<Message> messages = GetMessagesFromUser(other_user_id);
-            for (int i = 0; i < messages.Count; i++)
-            {
-                if (messages[i].Id == id)
-                    return messages[i];
-            }
-            return null;
-        }
-
-        public void Delete_user(string id)
-        {
-            Contacts.Remove(Contacts.Find(x => x.Id == id));
-        }
-
-        public void setMessage(string to, string content, bool sent)
-        {
-            for (int i = 0; i < Conversations.Count; i++)
-            {
-                if (Conversations[i].IsMe(to) == true)
-                {
-                    Conversations[i].AddMessage(new Message(content, sent));
-                }
-            }
-            this.Last = content;
-        }
-        public void EditSpecificMessage(string other_user_id, string message_id, string content)
-        {
-            Message message = GetSpecificMessageFromUser(other_user_id, message_id);
-            message.Content = content;
-
-        }
-        public void DeleteSpecificMessage(string other_user_id, string message_id)
-        {
-            List<Message> messages = GetMessagesFromUser(other_user_id);
-            messages.Remove(messages.Find(m => m.Id == message_id));
-        }
-
-        public string GetLast(string other_user)
-        {
-            Conversation conversation = Conversations.Find(c => c.Contacts.Any(x => x.Id == other_user));
-            if (conversation == null)
-                return null;
-            return conversation.last;
-        }
-
-        public string GetLastDate(string other_user)
-        {
-            Conversation conversation = Conversations.Find(c => c.Contacts.Any(x => x.Id == other_user));
-            if (conversation == null)
-                return null;
-            return conversation.lastdate;
-        }
-
-        public List<ContactFirstAPI> GetContacts()
-        {
-            List<ContactFirstAPI> contacts = new List<ContactFirstAPI>();
-            foreach (Conversation conversation in Conversations)
-            {
-                string from = conversation.Contacts.First().Id;
-                string to = conversation.Contacts[1].Id;
-                string name_to_add = "";
-                string Last = "";
-                string server_to_add;
-                if (from == Id)
-                    name_to_add = to;
-                else
-                    name_to_add= from;
-                Last = conversation.last;
-                contacts.Add(new ContactFirstAPI(name_to_add, name_to_add, null, Last, conversation.lastdate));
-            }
-            return contacts;
-        }
-
     }
 }

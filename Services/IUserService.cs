@@ -4,16 +4,16 @@ using WebApi.View;
 
 namespace Web_API.Services
 {
-    public interface IContactService
+    public interface IUserService
     {
-        public List<Contact> GetAllContacts();
+        public List<User> GetAllContacts();
 
         public List<ContactFirstAPI> GetAllContactsAPI();
 
         public List<ContactFirstAPI> GetContacts(string user_id);
         public void CreateNewContact(string add_to, string id, string name, string server);
 
-        public Contact Get(string id);
+        public User Get(string id);
 
         public void Delete(string user_name, string id);
 
@@ -33,7 +33,7 @@ namespace Web_API.Services
 
         public string GetUserServer(string user_name);
 
-        public bool Check_if_friends(Contact user_name, string other_user_name);
+        public bool Check_if_friends(User user_name, string other_user_name);
         public ContactFirstAPI GetApiContact(string username, string id);
 
         public void AddNewFromOtherServer(string from,string to,string server);

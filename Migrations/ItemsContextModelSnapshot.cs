@@ -10,7 +10,7 @@ using WebShop;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(ItemsContext))]
-    partial class MainContextModelSnapshot : ModelSnapshot
+    partial class ItemsContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -19,7 +19,7 @@ namespace WebApi.Migrations
                 .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("ContactConversation", b =>
+            modelBuilder.Entity("ConversationUser", b =>
                 {
                     b.Property<string>("ContactsId")
                         .HasColumnType("varchar(255)");
@@ -31,44 +31,7 @@ namespace WebApi.Migrations
 
                     b.HasIndex("ConversationsId");
 
-                    b.ToTable("ContactConversation");
-                });
-
-            modelBuilder.Entity("Web_API.Models.Contact", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("ContactId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CreatedDate")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Last")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("LastDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Server")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Contacts");
+                    b.ToTable("ConversationUser");
                 });
 
             modelBuilder.Entity("Web_API.Models.Message", b =>
@@ -76,38 +39,105 @@ namespace WebApi.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("ContactId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ConversationId")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("ConversationId1")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Created")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("Sent")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
 
-                    b.HasIndex("ContactId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ConversationId");
 
                     b.HasIndex("ConversationId1")
                         .IsUnique();
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("Web_API.Models.User", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ContactId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CreatedDate")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Last")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("LastDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RefContactId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Server")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RefContactId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("WebApi.Models.Contact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContactId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("IsContactOf")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Last")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("LastDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Server")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsContactOf");
+
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("WebApi.Models.Conversation", b =>
@@ -120,9 +150,9 @@ namespace WebApi.Migrations
                     b.ToTable("Conversations");
                 });
 
-            modelBuilder.Entity("ContactConversation", b =>
+            modelBuilder.Entity("ConversationUser", b =>
                 {
-                    b.HasOne("Web_API.Models.Contact", null)
+                    b.HasOne("Web_API.Models.User", null)
                         .WithMany()
                         .HasForeignKey("ContactsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -135,49 +165,51 @@ namespace WebApi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Web_API.Models.Contact", b =>
-                {
-                    b.HasOne("Web_API.Models.Contact", "RefContact")
-                        .WithMany("Contacts")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RefContact");
-                });
-
             modelBuilder.Entity("Web_API.Models.Message", b =>
                 {
-                    b.HasOne("Web_API.Models.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebApi.Models.Conversation", "RefConversation")
                         .WithMany("Messages")
-                        .HasForeignKey("ConversationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ConversationId");
 
                     b.HasOne("WebApi.Models.Conversation", null)
                         .WithOne("Last")
                         .HasForeignKey("Web_API.Models.Message", "ConversationId1");
 
-                    b.Navigation("Contact");
+                    b.HasOne("Web_API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("RefConversation");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Web_API.Models.Contact", b =>
+            modelBuilder.Entity("Web_API.Models.User", b =>
+                {
+                    b.HasOne("Web_API.Models.User", "RefContact")
+                        .WithMany()
+                        .HasForeignKey("RefContactId");
+
+                    b.Navigation("RefContact");
+                });
+
+            modelBuilder.Entity("WebApi.Models.Contact", b =>
+                {
+                    b.HasOne("Web_API.Models.User", "RefUser")
+                        .WithMany("Contacts")
+                        .HasForeignKey("IsContactOf");
+
+                    b.Navigation("RefUser");
+                });
+
+            modelBuilder.Entity("Web_API.Models.User", b =>
                 {
                     b.Navigation("Contacts");
                 });
 
             modelBuilder.Entity("WebApi.Models.Conversation", b =>
                 {
-                    b.Navigation("Last")
-                        .IsRequired();
+                    b.Navigation("Last");
 
                     b.Navigation("Messages");
                 });

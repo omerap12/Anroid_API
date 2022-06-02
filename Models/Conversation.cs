@@ -9,16 +9,16 @@ namespace WebApi.Models
         //public string from;
         //[ForeignKey("Id")];
 
-        public List<Contact> Contacts { get; set; }
+        public List<User> Contacts { get; set; }
         //public string to;
         public string last;
         public string Id;
         public string lastdate;
         
 
-        public Conversation(Contact from, Contact to)
+        public Conversation(User from, User to)
         {
-            Contacts = new List<Contact>() { from, to};
+            Contacts = new List<User>() { from, to};
             Messages = new List<Message>();
         }
         public Conversation()

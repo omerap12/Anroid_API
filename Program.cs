@@ -61,8 +61,8 @@ app.UseEndpoints(endpoints =>
 
 using(var database = new ItemsContext())
 {
-    var contacts = database.Contacts.Include(p => p.Conversations).ToList();
-    var convOfFirst = contacts.FirstOrDefault().Conversations;
+    var users = database.Users.Include(p => p.Contacts).Include(p => p.Conversations).ToList();
+    var convOfFirst = users.FirstOrDefault().Conversations;
     var conv = database.Conversations.Include(p => p.Messages).ToList();
     var msgs = conv.FirstOrDefault().Messages;
     var num = 1;
