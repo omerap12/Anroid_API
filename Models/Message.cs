@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebApi.Models;
 
 namespace Web_API.Models
 {
@@ -6,9 +7,11 @@ namespace Web_API.Models
     {
         [Key]
         public string Id { get; set; }
+        public Contact Contact { get; set; }
         public string Content { get; set; }
         public string Created { get; set; }
-        
+        public Conversation RefConversation { get; set; }
+        public string ConversationId { get; set; }
         public bool Sent { get; set; }
 
         public Message()

@@ -7,15 +7,16 @@ namespace Web_API.Models
     public class Contact
     {
         public DateTime LastDate { get; set; }
-        private List<Contact> Contacts { get; set; }
-        private List<Conversation> Conversations { get; set; }
+        public List<Contact> Contacts { get; set; }
+        public List<Conversation> Conversations { get; set; }
 
+        public Contact RefContact { get; set; }
         [Key]
         [ForeignKey("Id")]
         public string Id { get; set; }
         public string Name { get; set; }
 
-        public int ContactId { get; set; }
+        public string ContactId { get; set; }
 
         public string CreatedDate { get; set; }
 
@@ -121,7 +122,7 @@ namespace Web_API.Models
 
         public string GetLast(string other_user)
         {
-            Conversation conversation = Conversations.Find(c => c.to == other_user || c.from == other_user);
+            Conversation conversation = Conversations.Find(c => c.Contacts.Any(x => x.Id == other_user));
             if (conversation == null)
                 return null;
             return conversation.last;
@@ -129,7 +130,7 @@ namespace Web_API.Models
 
         public string GetLastDate(string other_user)
         {
-            Conversation conversation = Conversations.Find(c => c.to == other_user || c.from == other_user);
+            Conversation conversation = Conversations.Find(c => c.Contacts.Any(x => x.Id == other_user));
             if (conversation == null)
                 return null;
             return conversation.lastdate;
@@ -140,8 +141,8 @@ namespace Web_API.Models
             List<ContactFirstAPI> contacts = new List<ContactFirstAPI>();
             foreach (Conversation conversation in Conversations)
             {
-                string from = conversation.from;
-                string to = conversation.to;
+                string from = conversation.Contacts.First().Id;
+                string to = conversation.Contacts[1].Id;
                 string name_to_add = "";
                 string Last = "";
                 string server_to_add;

@@ -4,20 +4,21 @@ namespace WebApi.Models
 {
     public class Conversation
     {
-        public List<Message> Messages;
-        [ForeignKey("Id")]
-        public string from;
-        [ForeignKey("Id")]
-        public string to;
+        public List<Message> Messages { get; set; }
+        //[ForeignKey("Id")]
+        //public string from;
+        //[ForeignKey("Id")];
+
+        public List<Contact> Contacts { get; set; }
+        //public string to;
         public string last;
-        public string id;
+        public string Id;
         public string lastdate;
         
 
-        public Conversation(string from, string to)
+        public Conversation(Contact from, Contact to)
         {
-            this.from = from;
-            this.to = to;
+            Contacts = new List<Contact>() { from, to};
             Messages = new List<Message>();
         }
         public Conversation()
@@ -51,7 +52,8 @@ namespace WebApi.Models
         }
         public bool IsMe(string name)
         {
-            if (this.from == name || this.to == name)
+            
+            if (this.Contacts[0].Id == name || this.Contacts[1].Id == name)
                 return true;
             return false;
         }

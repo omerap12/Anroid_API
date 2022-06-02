@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebShop;
 
@@ -10,9 +11,10 @@ using WebShop;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(ItemsContext))]
-    partial class MainContextModelSnapshot : ModelSnapshot
+    [Migration("20220602133153_Init1631")]
+    partial class Init1631
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,4 +1,7 @@
 using WebApi.Hubs;
+using WebShop;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -56,4 +59,12 @@ app.UseEndpoints(endpoints =>
     endpoints.MapHub<MyHub>("/MyHub");
 });
 
+using(var database = new ItemsContext())
+{
+    var contacts = database.Contacts.Include(p => p.Conversations).ToList();
+    var convOfFirst = contacts.FirstOrDefault().Conversations;
+    var conv = database.Conversations.Include(p => p.Messages).ToList();
+    var msgs = conv.FirstOrDefault().Messages;
+    var num = 1;
+}
 app.Run();

@@ -40,17 +40,17 @@ public class ContactService : IContactService
     public void CreateNewContact(string add_to, string id, string name, string server)
     {
         //check if contact is in db already
-        Contact contcat = Get(id);
-        Contact request = Get(add_to);
+        Contact fromContact = Get(id);
+        Contact toContact = Get(add_to);
 
         //need to add ne user
-        if (contcat == null)
+        if (fromContact == null)
         {
             Contact new_one = new Contact(id, name, "password", server);
             Contact addTo = Contacts.Find(x => x.Id == add_to);
             Contacts.Add(new_one);
-            Conversation conversation_one = new Conversation(id, add_to);
-            Conversation conversation_two = new Conversation(add_to, id);
+            Conversation conversation_one = new Conversation(fromContact, toContact);
+            Conversation conversation_two = new Conversation(toContact, fromContact);
             addTo.AddContacts(new_one);
             new_one.AddContacts(addTo);
             addTo.AddConversation(conversation_one);
@@ -58,19 +58,19 @@ public class ContactService : IContactService
         }
         else
         {
-            if (request.IsFriendOfMe(id))
+            if (toContact.IsFriendOfMe(id))
             {
                 return;
             }
             else
             {
-                contcat.AddContacts(request);
-                request.AddContacts(contcat);
-                Conversation conversation_one = new Conversation(id, add_to);
-                Conversation conversation_two = new Conversation(add_to, id);
+                fromContact.AddContacts(toContact);
+                toContact.AddContacts(fromContact);
+                Conversation conversation_one = new Conversation(fromContact, toContact);
+                Conversation conversation_two = new Conversation(toContact, fromContact);
 
-                contcat.AddConversation(conversation_one);
-                request.AddConversation(conversation_two);
+                fromContact.AddConversation(conversation_one);
+                toContact.AddConversation(conversation_two);
 
             }
 
@@ -194,19 +194,19 @@ public class ContactService : IContactService
     }
     public void AddNewFromOtherServer(string from, string to, string server)
     {
-        Contact contcat = Get(to);
-        Contact request = Get(from);
+        Contact toContact = Get(to);
+        Contact fromCotnact = Get(from);
 
         //need to add ne user
-        if (request == null)
+        if (fromCotnact == null)
         {
             Contact new_one = new Contact(from, from, "password", server);
             Contacts.Add(new_one);
-            Conversation conversation_one = new Conversation(from, to);
-            Conversation conversation_two = new Conversation(to,from);
-            contcat.AddContacts(new_one);
-            new_one.AddContacts(contcat);
-            contcat.AddConversation(conversation_one);
+            Conversation conversation_one = new Conversation(fromCotnact, toContact);
+            Conversation conversation_two = new Conversation(toContact, fromCotnact);
+            toContact.AddContacts(new_one);
+            new_one.AddContacts(toContact);
+            toContact.AddConversation(conversation_one);
             new_one.AddConversation(conversation_two);
         }
     }
