@@ -17,10 +17,24 @@ namespace WebShop
         {
             // Configuring the Name property as the primary
             // key of the Items table
-            modelBuilder.Entity<Contact>().HasKey(e => e.Id);
-            modelBuilder.Entity<Conversation>().HasKey(e => e.id);
-            modelBuilder.Entity<Message>().HasKey(e => e.Id);
+            modelBuilder.Entity<Contact>().HasKey(p => p.Id);
+            modelBuilder.Entity<Contact>().HasKey(p => p.Id);
+            modelBuilder.Entity<Contact>().HasMany<Contact>(p => p.Contacts).WithOne(p=> p.RefContact).HasForeignKey(p => p.Id);
+            modelBuilder.Entity<Contact>().HasMany<Conversation>(p => p.Conversations)
+                .WithMany(p => p.Contacts);
 
+            modelBuilder.Entity<Message>().HasKey(p => p.Id);
+            modelBuilder.Entity<Message>().HasOne(p => p.Contact);
+
+            modelBuilder.Entity<Conversation>().HasKey(p => p.Id);
+            modelBuilder.Entity<Conversation>().HasMany<Message>(p => p.Messages).WithOne(p => p.RefConversation)
+                .HasForeignKey(p => p.ConversationId);
+            modelBuilder.Entity<Conversation>().HasMany<Contact>(p => p.Contacts).WithMany(p => p.Conversations);
+
+
+
+
+            
         }
 
         public DbSet<Contact> Contacts { get; set; }
